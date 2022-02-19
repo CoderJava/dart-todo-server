@@ -31,6 +31,10 @@ class Service {
       return SupabaseClientHelper.markTodoAsDone(id);
     });
 
+    router.delete('/todo/<id>', (Request request, String id) async {
+      return SupabaseClientHelper.deleteTodo(id);
+    });
+
     router.all('/<ignored|.*>', (Request request) async {
       return Response.notFound('Page not found');
     });

@@ -40,4 +40,9 @@ class SupabaseClientHelper {
         .execute();
     return Response.ok(jsonEncode(response.data));
   }
+
+  static Future<Response> deleteTodo(String id) async {
+    final response = await client.from(todoTableName).delete().eq('id', id).execute();
+    return Response.ok(jsonEncode(response.data));
+  }
 }
