@@ -15,10 +15,20 @@ class Service {
     });
 
     router.post('/create-todo', (Request request) async {
-      final strRequest = await request.readAsString();
-      Map<String, dynamic> body = jsonDecode(strRequest);
+      final strBodyRequest = await request.readAsString();
+      Map<String, dynamic> body = jsonDecode(strBodyRequest);
       body['created_at'] = Jiffy().format();
       return SupabaseClientHelper.createTodo(body);
+    });
+
+    router.put('/todo/<id>', (Request request, String id) async {
+      final strBodyRequest = await request.readAsString();
+      Map<String, dynamic> body = jsonDecode(strBodyRequest);
+      return SupabaseClientHelper.updateTodo(id, body);
+    });
+
+    router.put('/todo/done/<id>', (Request request, String id) async {
+      return SupabaseClientHelper.markTodoAsDone(id);
     });
 
     router.all('/<ignored|.*>', (Request request) async {

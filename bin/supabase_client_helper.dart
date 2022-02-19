@@ -5,7 +5,8 @@ import 'package:supabase/supabase.dart';
 
 class SupabaseClientHelper {
   static const supabaseUrl = 'https://cvggebzlbkbdjhyksggi.supabase.co';
-  static const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Z2dlYnpsYmtiZGpoeWtzZ2dpIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUyMzc2NDAsImV4cCI6MTk2MDgxMzY0MH0.PBHqDsxhwBFPx5lVUigrocngHmVP45AEqRU27wcBwqI';
+  static const supabaseKey =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Z2dlYnpsYmtiZGpoeWtzZ2dpIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUyMzc2NDAsImV4cCI6MTk2MDgxMzY0MH0.PBHqDsxhwBFPx5lVUigrocngHmVP45AEqRU27wcBwqI';
   static SupabaseClient client = SupabaseClient(supabaseUrl, supabaseKey);
   static const todoTableName = 'todo_table';
 
@@ -19,6 +20,24 @@ class SupabaseClientHelper {
 
   static Future<Response> createTodo(Map<String, dynamic> body) async {
     final response = await client.from(todoTableName).insert(body).execute();
+    return Response.ok(jsonEncode(response.data));
+  }
+
+  static Future<Response> updateTodo(String id, Map<String, dynamic> body) async {
+    final response = await client.from(todoTableName).update(body).eq('id', id).execute();
+    return Response.ok(jsonEncode(response.data));
+  }
+
+  static Future<Response> markTodoAsDone(String id) async {
+    final response = await client
+        .from(todoTableName)
+        .update(
+          {
+            'is_done': true,
+          },
+        )
+        .eq('id', id)
+        .execute();
     return Response.ok(jsonEncode(response.data));
   }
 }
