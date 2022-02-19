@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:jiffy/jiffy.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
@@ -13,11 +14,12 @@ class Service {
       return await SupabaseClientHelper.getAllTodo();
     });
 
-    /*router.post('/create-todo', (Request request) async {
+    router.post('/create-todo', (Request request) async {
       final strRequest = await request.readAsString();
       Map<String, dynamic> body = jsonDecode(strRequest);
+      body['created_at'] = Jiffy().format();
       return SupabaseClientHelper.createTodo(body);
-    });*/
+    });
 
     router.all('/<ignored|.*>', (Request request) async {
       return Response.notFound('Page not found');

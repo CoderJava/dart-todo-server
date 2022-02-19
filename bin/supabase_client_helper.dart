@@ -16,4 +16,9 @@ class SupabaseClientHelper {
     };
     return Response.ok(jsonEncode(map));
   }
+
+  static Future<Response> createTodo(Map<String, dynamic> body) async {
+    final response = await client.from(todoTableName).insert(body).execute();
+    return Response.ok(jsonEncode(response.data));
+  }
 }
